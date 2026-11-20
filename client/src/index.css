@@ -1,0 +1,261 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand: hot saffron */
+  --color-brand-50: #fff4ed;
+  --color-brand-100: #ffe5d4;
+  --color-brand-200: #ffc8a8;
+  --color-brand-300: #ffa070;
+  --color-brand-400: #ff7a3d;
+  --color-brand-500: #ff5b14;
+  --color-brand-600: #f04a06;
+  --color-brand-700: #c73806;
+  --color-brand-800: #9e2e0d;
+  --color-brand-900: #7f290f;
+
+  /* Lime: the "pop" accent for highlights, savings, success */
+  --color-lime-200: #ecfccb;
+  --color-lime-300: #d9f99d;
+  --color-lime-400: #c6f432;
+  --color-lime-500: #a8d61a;
+
+  /* Marigold: awnings and festive touches */
+  --color-marigold-100: #fef3c7;
+  --color-marigold-200: #fde68a;
+  --color-marigold-300: #fcd34d;
+  --color-marigold-400: #fbbf24;
+  --color-marigold-500: #f59e0b;
+
+  /* Ink: warm near-black */
+  --color-ink-50: #f8f6f3;
+  --color-ink-100: #f0ece6;
+  --color-ink-200: #e3ddd4;
+  --color-ink-300: #cbc2b6;
+  --color-ink-400: #a0968a;
+  --color-ink-500: #82786d;
+  --color-ink-600: #645b52;
+  --color-ink-700: #4a423b;
+  --color-ink-800: #2a2420;
+  --color-ink-900: #15110e;
+
+  --color-cream: #f7f4ef;
+
+  --shadow-soft: 0 1px 2px rgb(21 17 14 / 0.05), 0 6px 20px rgb(21 17 14 / 0.06);
+  --shadow-lift: 0 4px 8px rgb(21 17 14 / 0.06), 0 18px 40px rgb(21 17 14 / 0.14);
+
+  --animate-rise: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-sheet: sheet 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-fade: fade 0.2s ease-out both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+  @keyframes sheet {
+    from {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream text-ink-900 antialiased;
+    overscroll-behavior-y: none;
+    overflow-x: clip;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+  }
+  ::selection {
+    @apply bg-lime-300;
+  }
+  button,
+  a {
+    touch-action: manipulation;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-bold whitespace-nowrap transition active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-sm {
+    @apply rounded-xl px-3 py-2 text-xs;
+  }
+  .btn-lg {
+    @apply px-6 py-4 text-base;
+  }
+  .btn-primary {
+    @apply bg-brand-500 text-white shadow-[0_8px_20px_-6px_rgb(255_91_20/0.6)] hover:bg-brand-600;
+  }
+  .btn-secondary {
+    @apply border border-ink-200 bg-white text-ink-900 hover:bg-ink-50;
+  }
+  .btn-dark {
+    @apply bg-ink-900 text-white hover:bg-ink-800;
+  }
+  .btn-lime {
+    @apply bg-lime-400 text-ink-900 hover:bg-lime-500;
+  }
+  .btn-ghost {
+    @apply text-ink-600 hover:bg-ink-100 hover:text-ink-900;
+  }
+  .btn-danger {
+    @apply bg-red-600 text-white hover:bg-red-700;
+  }
+  .btn-success {
+    @apply bg-emerald-600 text-white shadow-[0_8px_20px_-8px_rgb(5_150_105/0.7)] hover:bg-emerald-700;
+  }
+  .btn-whatsapp {
+    @apply bg-[#25D366] text-white hover:bg-[#1ebe5b];
+  }
+  .btn-icon {
+    @apply inline-flex h-11 w-11 items-center justify-center rounded-2xl text-ink-700 transition hover:bg-ink-100 hover:text-ink-900 active:scale-95;
+  }
+
+  /* Round labelled action buttons (Call / WhatsApp / Directions / Share) */
+  .action-tile {
+    @apply flex flex-1 flex-col items-center gap-1.5 text-[11px] font-bold text-ink-700 transition active:scale-95;
+  }
+  .action-tile > span:first-child {
+    @apply flex h-12 w-12 items-center justify-center rounded-2xl;
+  }
+
+  .input {
+    @apply w-full rounded-2xl border-2 border-ink-100 bg-white px-4 py-3 text-[15px] text-ink-900 outline-none transition placeholder:text-ink-400 focus:border-ink-900 disabled:bg-ink-50;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-bold text-ink-800;
+  }
+  .hint {
+    @apply mt-1.5 text-xs text-ink-500;
+  }
+
+  .card {
+    @apply rounded-3xl bg-white shadow-soft;
+  }
+  .card-hover {
+    @apply transition active:scale-[0.98] md:hover:-translate-y-0.5 md:hover:shadow-lift;
+  }
+
+  .chip {
+    @apply inline-flex shrink-0 items-center gap-1.5 rounded-full border-2 border-ink-100 bg-white px-4 py-2 text-sm font-bold text-ink-700 transition active:scale-95;
+  }
+  .chip-active {
+    @apply border-ink-900 bg-ink-900 text-white;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-extrabold tracking-[0.14em] text-ink-400 uppercase;
+  }
+
+  .section-title {
+    @apply font-display text-xl font-extrabold tracking-tight text-ink-900 md:text-2xl;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Striped shop awning with a scalloped edge. Colours via --awning-a / --awning-b. */
+  .awning {
+    --awning-a: var(--color-brand-500);
+    --awning-b: #fff;
+    --stripe: 1.1rem;
+    position: relative;
+    z-index: 1;
+    height: 1.4rem;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--awning-a) 0 var(--stripe),
+      var(--awning-b) var(--stripe) calc(var(--stripe) * 2)
+    );
+  }
+  .awning::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    height: calc(var(--stripe) / 2);
+    background:
+      radial-gradient(circle at calc(var(--stripe) / 2) 0, var(--awning-a) calc(var(--stripe) / 2), transparent calc(var(--stripe) / 2 + 0.5px)) 0 0 /
+        calc(var(--stripe) * 2) 100% repeat-x,
+      radial-gradient(
+          circle at calc(var(--stripe) * 1.5) 0,
+          var(--awning-b) calc(var(--stripe) / 2),
+          transparent calc(var(--stripe) / 2 + 0.5px)
+        )
+        0 0 / calc(var(--stripe) * 2) 100% repeat-x;
+    filter: drop-shadow(0 2px 1px rgb(21 17 14 / 0.1));
+  }
+
+  .dots {
+    background-image: radial-gradient(rgb(255 255 255 / 0.22) 1.2px, transparent 1.2px);
+    background-size: 16px 16px;
+  }
+
+  /* Brand header backdrop used on the home screen */
+  .hero-bg {
+    background:
+      radial-gradient(120% 80% at 100% 0%, rgb(255 210 120 / 0.55) 0%, transparent 55%),
+      radial-gradient(90% 70% at 0% 100%, rgb(240 74 6 / 0.9) 0%, transparent 60%),
+      var(--color-brand-500);
+  }
+}
+
+.leaflet-container {
+  font-family: inherit;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #print-area,
+  #print-area * {
+    visibility: visible;
+  }
+  #print-area {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: none;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,42 @@
+# Render Blueprint: New > Blueprint > pick this repo. Creates the API on the free plan.
+# Values marked `sync: false` are asked for once in the Render dashboard (copy them from server/.env).
+services:
+  - type: web
+    name: sabkidukaan-api
+    runtime: node
+    plan: free
+    # Closest Render region to the Supabase database in Mumbai
+    region: singapore
+    rootDir: server
+    # Migrations and seeds are safe to re-run on every deploy
+    buildCommand: npm install && npm run migrate && npm run seed
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: DB_SSL
+        value: "true"
+      # A new random secret for production (users log in again once)
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 30d
+      # The Netlify site URL, e.g. https://sabkidukaan.netlify.app (comma separated for several)
+      - key: CORS_ORIGINS
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: ADMIN_EMAILS
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
