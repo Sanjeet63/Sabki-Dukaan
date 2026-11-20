@@ -10,8 +10,9 @@ export function useCategories() {
 }
 
 // Seller's shop (one per seller in the MVP)
-export function useMyShop(enabled = true) {
+export function useMyShop(enabled = true, options = {}) {
   return useQuery({
+    ...options,
     queryKey: ['my-shops'],
     queryFn: () => api('/seller/shops').then((d) => d.shops[0] ?? null),
     enabled,

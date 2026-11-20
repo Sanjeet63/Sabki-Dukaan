@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ClipboardList, LayoutDashboard, Package, QrCode, Settings } from 'lucide-react';
 import { useEffect, useRef } from 'react';
-import { Navigate, useNavigate } from 'react-router';
+import { Link, Navigate, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { api } from '../api/client.js';
 import { newOrderIcon } from '../components/AppToaster.jsx';
-import { Badge, Spinner, Toggle } from '../components/ui.jsx';
+import { Badge, ErrorMessage, Spinner, Toggle } from '../components/ui.jsx';
+import SellerApprovalPage from '../features/seller/SellerApprovalPage.jsx';
 import { useMyShop } from '../lib/queries.js';
 import PanelLayout from './PanelLayout.jsx';
 
@@ -89,13 +90,28 @@ function useNewOrderAlert(pending) {
 }
 
 export default function SellerLayout() {
-  const shop = useMyShop();
-  const stats = useSellerStats(shop.data?.id);
+  const shop = useMyShop(true, { refetchInterval: 20_000, refetchOnWindowFocus: true });
+  const stats = useSellerStats(shop.data?.status === 'active' ? shop.data.id : null);
   useNewOrderAlert(stats.data?.pendingOrders);
 
   if (shop.isLoading) return <Spinner className="min-h-screen" />;
+  if (shop.isError && !shop.data) {
+    return (
+      <main className="mx-auto max-w-lg space-y-4 px-4 py-12">
+        <h1 className="text-2xl font-extrabold">Unable to check shop approval</h1>
+        <ErrorMessage error={shop.error} />
+        <button type="button" className="btn btn-primary" disabled={shop.isFetching} onClick={() => shop.refetch()}>
+          {shop.isFetching ? 'Checking...' : 'Try again'}
+        </button>
+        <Link to="/" className="btn btn-ghost">Browse shops</Link>
+      </main>
+    );
+  }
   if (!shop.data) return <Navigate to="/seller/onboarding" replace />;
   const s = shop.data;
+  if (s.status !== 'active') {
+    return <SellerApprovalPage shop={s} checking={shop.isFetching} error={shop.error} onCheck={() => shop.refetch()} />;
+  }
 
   const nav = [
     { to: '/seller', end: true, icon: LayoutDashboard, label: 'Dashboard', shortLabel: 'Home' },

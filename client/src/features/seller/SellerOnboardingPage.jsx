@@ -30,7 +30,8 @@ export default function SellerOnboardingPage() {
 
   const register = useMutation({
     mutationFn: () => api('/seller/shops', { method: 'POST', body: toShopPayload(form) }),
-    onSuccess: async () => {
+    onSuccess: async ({ shop }) => {
+      queryClient.setQueryData(['my-shops'], shop);
       await refresh();
       await queryClient.invalidateQueries({ queryKey: ['my-shops'] });
       toast.success('Shop registered!', { description: 'We will review and make it live soon.' });
