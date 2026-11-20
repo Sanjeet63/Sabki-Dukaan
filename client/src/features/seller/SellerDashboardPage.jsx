@@ -1,40 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { ArrowRight, Clock, ExternalLink, Package, PackageX, PlusCircle, QrCode, ShoppingBag, Star } from 'lucide-react';
+import { ArrowRight, ExternalLink, Package, PackageX, PlusCircle, QrCode, ShoppingBag, Star } from 'lucide-react';
 import { Link, useOutletContext } from 'react-router';
 import { api } from '../../api/client.js';
 import { Skeleton, StatCard } from '../../components/ui.jsx';
 import { formatPaise, timeAgo } from '../../lib/format.js';
 import { FulfilmentBadge, OrderActions } from '../orders/OrderComponents.jsx';
-
-function StatusBanner({ shop }) {
-  if (shop.status === 'active') return null;
-  const content = {
-    pending: {
-      tone: 'bg-marigold-300 text-ink-900',
-      title: 'Your shop is under review',
-      text: 'We will verify and make it live soon. Add products now so customers see them right away.',
-    },
-    rejected: {
-      tone: 'bg-red-100 text-red-900',
-      title: 'Registration not approved',
-      text: shop.statusReason ? `Reason: ${shop.statusReason}. Update details in Settings.` : 'Please update your details in Settings.',
-    },
-    suspended: {
-      tone: 'bg-red-100 text-red-900',
-      title: 'Your shop is suspended',
-      text: shop.statusReason ? `Reason: ${shop.statusReason}` : 'Contact support for details.',
-    },
-  }[shop.status];
-  return (
-    <div className={`flex gap-3 rounded-3xl p-4 ${content.tone}`}>
-      <Clock className="mt-0.5 h-5 w-5 shrink-0" />
-      <div>
-        <p className="font-extrabold">{content.title}</p>
-        <p className="mt-0.5 text-sm opacity-85">{content.text}</p>
-      </div>
-    </div>
-  );
-}
 
 function TodayCard({ shop, stats }) {
   const needsAction = stats ? stats.pendingOrders + stats.activeOrders : 0;
@@ -190,7 +160,6 @@ export default function SellerDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <StatusBanner shop={shop} />
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
         <div className="min-w-0 space-y-6">
           <TodayCard shop={shop} stats={stats} />
